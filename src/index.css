@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-sans text-stone-900 dark:text-stone-100 antialiased selection:bg-pine-200 selection:text-pine-900 transition-colors duration-300;
+    background-color: #f0ede8;
+  }
+  html.dark body {
+    background-color: #0f1117;
+  }
+}
+
+/* Custom scrollbar for Notes Section */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-stone-300 dark:bg-stone-700 rounded-full hover:bg-stone-400 dark:hover:bg-stone-600;
+}
