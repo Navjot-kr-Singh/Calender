@@ -13,7 +13,7 @@ export default function NotesSection({ currentDate, startDate, endDate }) {
   const [isLoading, setIsLoading] = useState(false);
   const { getToken, isSignedIn } = useAuth();
 
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
+  const API_URL = import.meta.env.VITE_API_URL || '/api';
 
   const getStorageKey = () => {
     if (startDate && endDate) {
