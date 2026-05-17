@@ -5,6 +5,7 @@ const cors = require('cors');
 const { ClerkExpressWithAuth } = require('@clerk/clerk-sdk-node');
 
 const noteRoutes = require('./routes/noteRoutes');
+const eventRoutes = require('./routes/eventRoutes');
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(ClerkExpressWithAuth());
 
 // Routes
 app.use('/api/notes', noteRoutes);
+app.use('/api/events', eventRoutes);
 
 // Global Error Handler
 app.use((err, req, res, next) => {

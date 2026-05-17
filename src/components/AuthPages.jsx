@@ -1,103 +1,146 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { SignIn, SignUp } from '@clerk/clerk-react';
+import calendarImg from '../assets/calendar.png';
+import womanImg from '../assets/woman.png';
 
-const darkAppearance = {
+const clerkAppearance = {
   variables: {
-    colorBackground: '#1c1917',
-    colorInputBackground: '#292524',
-    colorInputText: '#e7e5e4',
-    colorText: '#e7e5e4',
-    colorTextSecondary: '#a8a29e',
-    colorPrimary: '#60867a',
-    colorDanger: '#f87171',
-    borderRadius: '0.75rem',
+    colorPrimary: '#E51E25',
+    colorText: '#1a1a1a',
+    colorBackground: '#ffffff',
+    borderRadius: '0.5rem',
     fontFamily: 'Inter, sans-serif',
   },
   elements: {
     card: {
-      backgroundColor: '#1c1917',
-      border: '1px solid rgba(255,255,255,0.08)',
-      boxShadow: '0 25px 50px -12px rgba(0,0,0,0.6)',
+      boxShadow: '8px 8px 0px 0px rgba(0,0,0,1)',
+      border: '2px solid black',
+      padding: '2rem',
     },
     headerTitle: {
-      color: '#f5f5f4',
-      fontFamily: '"Playfair Display", serif',
       fontSize: '1.5rem',
+      fontWeight: '700',
+      color: '#1a1a1a',
+      textAlign: 'center',
     },
     headerSubtitle: {
-      color: '#a8a29e',
+      color: '#666',
+      textAlign: 'center',
+      marginBottom: '1.5rem',
     },
     formFieldLabel: {
-      color: '#d6d3d1',
+      fontWeight: '600',
+      color: '#1a1a1a',
+      marginBottom: '0.5rem',
     },
     formFieldInput: {
-      backgroundColor: '#292524',
-      borderColor: '#44403c',
-      color: '#f5f5f4',
+      border: '2px solid black',
+      height: '3rem',
+      fontSize: '1rem',
+      '&:focus': {
+        borderColor: '#E51E25',
+        boxShadow: 'none',
+      },
     },
     formButtonPrimary: {
-      backgroundColor: '#4c6b61',
-      '&:hover': { backgroundColor: '#40564f' },
-    },
-    footerActionLink: {
-      color: '#7ea196',
-    },
-    dividerLine: {
-      backgroundColor: '#44403c',
-    },
-    dividerText: {
-      color: '#78716c',
+      backgroundColor: '#E51E25',
+      border: '2px solid black',
+      boxShadow: '0 4px 0 0 rgba(0,0,0,1)',
+      height: '3rem',
+      fontSize: '1rem',
+      fontWeight: '700',
+      textTransform: 'none',
+      '&:hover': {
+        backgroundColor: '#cc1a21',
+        transform: 'translateY(2px)',
+        boxShadow: '0 2px 0 0 rgba(0,0,0,1)',
+      },
+      '&:active': {
+        transform: 'translateY(4px)',
+        boxShadow: 'none',
+      },
     },
     socialButtonsBlockButton: {
-      backgroundColor: '#292524',
-      borderColor: '#44403c',
-      color: '#d6d3d1',
-      '&:hover': { backgroundColor: '#44403c' },
+      border: '2px solid black',
+      height: '3rem',
+      fontSize: '1rem',
+      fontWeight: '600',
+      '&:hover': {
+        backgroundColor: '#f5f5f5',
+      },
     },
-    identityPreviewText: { color: '#d6d3d1' },
-    alertText: { color: '#fca5a5' },
+    dividerLine: {
+      backgroundColor: '#000',
+      height: '1px',
+    },
+    dividerText: {
+      color: '#000',
+      fontWeight: '600',
+      textTransform: 'lowercase',
+    },
+    footerActionLink: {
+      color: '#E51E25',
+      fontWeight: '700',
+      textDecoration: 'underline',
+      '&:hover': {
+        color: '#cc1a21',
+      },
+    },
+    identityPreviewText: { color: '#1a1a1a' },
+    formFieldSuccessText: { color: '#10b981' },
+    formFieldErrorText: { color: '#ef4444' },
   },
 };
 
 function AuthBackground({ children }) {
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden" style={{ backgroundColor: '#0f1117' }}>
-      {/* Subtle radial glow behind the form */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(ellipse 80% 60% at 50% 40%, rgba(76,107,97,0.18) 0%, transparent 70%)',
-        }}
-      />
+    <div className="min-h-screen bg-white flex flex-col md:flex-row overflow-y-auto">
+      {/* Left Side: Branding & Illustrations */}
+      <div className="hidden md:flex flex-1 flex-col items-center justify-start pt-[10vh] p-12 bg-white relative overflow-hidden border-r border-gray-100">
+        <div className="max-w-md w-full flex flex-col items-center text-center">
+          {/* Logo */}
+          <div className="mb-8 flex flex-col items-center">
+            <h1 className="text-6xl font-bold text-[#1e4eb8] tracking-tight" style={{ fontFamily: 'Fredoka, sans-serif' }}>
+              Calendra
+            </h1>
+          </div>
 
-      {/* Decorative grid lines */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.04]"
-        style={{
-          backgroundImage:
-            'linear-gradient(#a8a29e 1px, transparent 1px), linear-gradient(90deg, #a8a29e 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }}
-      />
+          {/* Calendar Illustration */}
+          <div className="mb-12 relative">
+            <img 
+              src={calendarImg} 
+              alt="Calendar Illustration" 
+              className="w-64 h-auto object-contain transform -rotate-3"
+            />
+          </div>
 
-      {/* Brand mark top */}
-      <div className="absolute top-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 z-10">
-        <span className="text-2xl font-serif text-stone-100 tracking-wide select-none" style={{ fontFamily: '"Playfair Display", serif' }}>
-          Calender
-        </span>
-        <span className="text-xs font-medium uppercase tracking-widest text-stone-500">Your personal planner</span>
+          {/* Text Content */}
+          <div className="mb-12">
+            <h2 className="text-4xl font-black text-black mb-4 leading-tight">
+              Your time, perfectly planned
+            </h2>
+            <p className="text-lg text-gray-600 font-medium max-w-sm mx-auto leading-relaxed">
+              Join millions of professionals who easily book meetings with the #1 scheduling tool
+            </p>
+          </div>
+
+          {/* Person Illustration */}
+          <div className="relative">
+            <img 
+              src={womanImg} 
+              alt="User Illustration" 
+              className="w-56 h-auto object-contain"
+            />
+          </div>
+        </div>
       </div>
 
-      {/* The Clerk form */}
-      <div className="relative z-10 mt-12">
-        {children}
+      {/* Right Side: Auth Form */}
+      <div className="flex-1 flex flex-col items-center justify-start pt-[12vh] p-6 bg-[#fcfcfc]">
+        <div className="w-full max-w-md">
+          {children}
+        </div>
       </div>
-
-      {/* Bottom tagline */}
-      <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-xs text-stone-600 select-none whitespace-nowrap">
-        Moments & Memories — beautifully organized.
-      </p>
     </div>
   );
 }
@@ -109,7 +152,7 @@ export function LoginPage() {
         path="/login"
         routing="path"
         signUpUrl="/signup"
-        appearance={darkAppearance}
+        appearance={clerkAppearance}
       />
     </AuthBackground>
   );
@@ -122,8 +165,9 @@ export function SignupPage() {
         path="/signup"
         routing="path"
         signInUrl="/login"
-        appearance={darkAppearance}
+        appearance={clerkAppearance}
       />
     </AuthBackground>
   );
 }
+
