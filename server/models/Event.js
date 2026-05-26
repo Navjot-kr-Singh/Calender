@@ -22,6 +22,14 @@ const eventSchema = new mongoose.Schema({
     type: Boolean,
     default: true
   },
+  date: {
+    type: String,
+    default: () => new Date().toISOString().split('T')[0]
+  },
+  time: {
+    type: String,
+    default: '12:00'
+  },
   createdAt: {
     type: Date,
     default: Date.now

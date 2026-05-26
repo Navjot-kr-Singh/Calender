@@ -21,13 +21,15 @@ router.post('/', async (req, res) => {
     const userId = req.auth.userId;
     if (!userId) return res.status(401).json({ message: 'Unauthorized' });
 
-    const { name, duration, description, isActive } = req.body;
+    const { name, duration, description, isActive, date, time } = req.body;
     const newEvent = new Event({
       userId,
       name,
       duration,
       description,
-      isActive
+      isActive,
+      date,
+      time
     });
 
     const savedEvent = await newEvent.save();

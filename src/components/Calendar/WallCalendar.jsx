@@ -1,13 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '@clerk/clerk-react';
+import axios from 'axios';
 import CalendarGrid from './CalendarGrid';
 import NotesSection from './NotesSection';
 import HeroImage from './HeroImage';
 import Navbar from '../Navbar';
 
+const API_URL = import.meta.env.VITE_API_URL || '/api';
+
 export default function WallCalendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
+  const [events, setEvents] = useState([]);
+  const { getToken, isSignedIn } = useAuth();
+
+  const fetchEvents = async () => {
+    if (!isSignedIn) return;
+    try {
+      const token = await getToken();
+      const response = await axios.get(`${API_URL}/events`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setEvents(response.data);
+    } catch (error) {
+      console.error("Failed to fetch events:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchEvents();
+  }, [isSignedIn]);
 
   return (
     <div className="min-h-screen bg-[#f0f2f5] flex flex-col font-sans tracking-normal">
@@ -40,6 +63,7 @@ export default function WallCalendar() {
                 setStartDate={setStartDate}
                 endDate={endDate}
                 setEndDate={setEndDate}
+                events={events}
               />
             </div>
 
@@ -49,6 +73,7 @@ export default function WallCalendar() {
                   currentDate={currentDate}
                   startDate={startDate}
                   endDate={endDate}
+                  events={events}
                />
             </div>
 

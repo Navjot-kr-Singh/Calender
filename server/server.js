@@ -1,4 +1,5 @@
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env'), override: true });
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -6,6 +7,8 @@ const { ClerkExpressWithAuth } = require('@clerk/clerk-sdk-node');
 
 const noteRoutes = require('./routes/noteRoutes');
 const eventRoutes = require('./routes/eventRoutes');
+const taskRoutes = require('./routes/taskRoutes');
+const { startReminderScheduler } = require('./services/reminderScheduler');
 
 const app = express();
 
@@ -20,6 +23,7 @@ app.use(ClerkExpressWithAuth());
 // Routes
 app.use('/api/notes', noteRoutes);
 app.use('/api/events', eventRoutes);
+app.use('/api/tasks', taskRoutes);
 
 // Global Error Handler
 app.use((err, req, res, next) => {
@@ -27,16 +31,19 @@ app.use((err, req, res, next) => {
   res.status(401).send('Unauthenticated!');
 });
 
-// Database connection
-const PORT = process.env.PORT || 4000;
+// Start Express server immediately
+const PORT = process.env.PORT || 4500;
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/calendar-notes";
 
+const server = app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
+
+// Connect to MongoDB in the background
 mongoose.connect(MONGO_URI)
   .then(() => {
     console.log('Connected to MongoDB');
-    app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
-    });
+    startReminderScheduler();
   })
   .catch((err) => {
     console.error('MongoDB connection error:', err);

@@ -17,7 +17,9 @@ const EventsPage = () => {
     name: '',
     duration: 30,
     description: '',
-    isActive: true
+    isActive: true,
+    date: new Date().toISOString().split('T')[0],
+    time: '12:00'
   });
 
   const fetchEvents = async () => {
@@ -54,7 +56,7 @@ const EventsPage = () => {
       }
       setIsModalOpen(false);
       setEditingEvent(null);
-      setFormData({ name: '', duration: 30, description: '', isActive: true });
+      setFormData({ name: '', duration: 30, description: '', isActive: true, date: new Date().toISOString().split('T')[0], time: '12:00' });
       fetchEvents();
     } catch (error) {
       console.error("Failed to save event:", error);
@@ -67,7 +69,9 @@ const EventsPage = () => {
       name: event.name,
       duration: event.duration,
       description: event.description || '',
-      isActive: event.isActive
+      isActive: event.isActive,
+      date: event.date || new Date().toISOString().split('T')[0],
+      time: event.time || '12:00'
     });
     setIsModalOpen(true);
   };
@@ -95,7 +99,7 @@ const EventsPage = () => {
           <button 
             onClick={() => {
               setEditingEvent(null);
-              setFormData({ name: '', duration: 30, description: '', isActive: true });
+              setFormData({ name: '', duration: 30, description: '', isActive: true, date: new Date().toISOString().split('T')[0], time: '12:00' });
               setIsModalOpen(true);
             }}
             className="flex items-center gap-2 bg-[#1e4eb8] text-white px-6 py-3 rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition-all active:scale-95"
@@ -135,7 +139,15 @@ const EventsPage = () => {
                 <div className="flex flex-col gap-4">
                   <div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-1">{event.name}</h3>
-                    <p className="text-gray-500 font-medium">{event.duration} mins</p>
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-500 font-medium">
+                      <span>{event.duration} mins</span>
+                      {event.date && (
+                        <>
+                          <span className="w-1.5 h-1.5 rounded-full bg-gray-300"></span>
+                          <span>{event.date} at {event.time || '12:00'}</span>
+                        </>
+                      )}
+                    </div>
                   </div>
                   
                   <p className="text-gray-600 line-clamp-3 min-h-[4.5rem]">
@@ -204,6 +216,29 @@ const EventsPage = () => {
                   className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl outline-none transition-all text-gray-800 font-medium"
                 />
                 <p className="text-gray-400 font-medium text-sm">In minutes</p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex flex-col gap-2">
+                  <label className="text-lg font-bold text-gray-800">Date</label>
+                  <input 
+                    type="date" 
+                    required
+                    value={formData.date}
+                    onChange={e => setFormData({...formData, date: e.target.value})}
+                    className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl outline-none transition-all text-gray-800 font-medium"
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label className="text-lg font-bold text-gray-800">Time</label>
+                  <input 
+                    type="time" 
+                    required
+                    value={formData.time}
+                    onChange={e => setFormData({...formData, time: e.target.value})}
+                    className="w-full px-6 py-4 bg-gray-50 border-2 border-transparent focus:border-blue-500 focus:bg-white rounded-2xl outline-none transition-all text-gray-800 font-medium"
+                  />
+                </div>
               </div>
 
               <div className="flex flex-col gap-2">
