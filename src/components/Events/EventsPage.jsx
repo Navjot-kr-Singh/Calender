@@ -4,6 +4,8 @@ import { useAuth } from '@clerk/clerk-react';
 import axios from 'axios';
 import Navbar from '../Navbar';
 
+
+
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 
 const EventsPage = () => {
